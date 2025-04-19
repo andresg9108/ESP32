@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Switch</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #000;
+                color: #fff;
+
+                display: flex;
+                
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+                
+                width: 100%;
+                height: 100vh;
+            }
+            
+            button {
+                width: 150px;
+                height: 150px;
+                background-color: #ff0000;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 35px;
+                font-weight: bold;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 50%;
+                border-style: solid;
+                border-width: 5px;
+                border-color: #fff;
+                transition: background-color 0.3s, transform 0.3s, border-color 0.3s;
+            }
+        </style>
+        <script type="module">
+            // http://192.168.1.7/api?l=0
+
+            const oOptions = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            };
+
+            document.querySelector('button').addEventListener('click', () => {
+                let oUrl = new URL('http://192.168.1.7/api');
+                
+                fetch(oUrl, oOptions)
+                .then((oResponse) => oResponse.json())
+                .then((oResponse) => {
+                    let oParams = new URLSearchParams();
+
+                    if(oResponse.led === 0){
+                        oParams.append('l', 1);
+                    }else{
+                        oParams.append('l', 0);
+                    }
+
+                    oUrl.search = oParams.toString();
+                    fetch(oUrl, oOptions)
+                    .then(oResponse => {
+                        console.log(oResponse);
+                    })
+                    .catch((oError) => {
+                        console.log(oError);
+                    });
+                })
+                .catch((oError) => {
+                    console.log(oError);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <button>
+            Click
+        </button>
+    </body>
+</html>

@@ -3,17 +3,22 @@
 ## Proyecto final:
 https://github.com/platzi/curso-progamacion-microcontroladores-esp32
 
+~~~
 // main/CMakeLists.txt
 idf_component_register(SRCS "webapp.c"
                     INCLUDE_DIRS "."
                     EMBED_FILES index.html chroma.png)
+~~~
 
+```c
 // Cargando los archivos HTML y PNG
 extern const char index_start[] asm("_binary_index_html_start");
 extern const char index_end[] asm("_binary_index_html_end");
 extern const char chroma_start[] asm("_binary_chroma_png_start");
 extern const char chroma_end[] asm("_binary_chroma_png_end");
+```
 
+```c
 // Configuración
 static const httpd_uri_t api = {
   .uri = "/api",
@@ -30,7 +35,9 @@ static const httpd_uri_t chroma = {
   .method = HTTP_GET,
   .handler = chroma_get_handler
 };
+```
 
+```c
 // Controladores
 static esp_err_t home_get_handler(httpd_req_t *req) {
   httpd_resp_set_type(req, "text/html");
@@ -48,7 +55,9 @@ static esp_err_t chroma_get_handler(httpd_req_t *req) {
 
   return ESP_OK;
 }
+```
 
+```c
 // Inicializando el servidor
 void web_server_init() {
   httpd_handle_t server = NULL;
@@ -62,3 +71,4 @@ void web_server_init() {
   }
   printf("Error al iniciar servidor\n");
 }
+```
